@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.xcc.dome.MainActivity">
+
+    <com.xcc.horizontalrefresh.HorizontalRefreshView
+        android:id="@+id/refreshView"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        app:bgColor="#FB8A8A"
+        app:maxW="150dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </com.xcc.horizontalrefresh.HorizontalRefreshView>
+
+    <com.xcc.horizontalrefresh.HorizontalRefreshView
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        app:bgColor="#FB8A8A"
+        app:maxW="150dp">
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:ems="5"
+                    android:gravity="center"
+                    android:padding="3dp"
+                    android:text="@string/this_scrollview_d" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:ems="5"
+                    android:padding="3dp"
+                    android:text="@string/this_scrollview_d" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:ems="5"
+                    android:gravity="center"
+                    android:padding="3dp"
+                    android:text="@string/this_scrollview_d" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:ems="5"
+                    android:padding="3dp"
+                    android:text="@string/this_scrollview_d" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:ems="5"
+                    android:gravity="center"
+                    android:padding="3dp"
+                    android:text="@string/this_scrollview_d" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:ems="5"
+                    android:padding="3dp"
+                    android:text="@string/this_scrollview_d" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:ems="5"
+                    android:gravity="center"
+                    android:padding="3dp"
+                    android:text="@string/this_scrollview_d" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:ems="5"
+                    android:padding="3dp"
+                    android:text="@string/this_scrollview_d" />
+            </LinearLayout>
+        </HorizontalScrollView>
+    </com.xcc.horizontalrefresh.HorizontalRefreshView>
+
+    <com.xcc.horizontalrefresh.HorizontalRefreshView
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        app:bgColor="#FB8A8A"
+        app:maxW="150dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="3dp"
+            android:text="@string/button_button_button" />
+    </com.xcc.horizontalrefresh.HorizontalRefreshView>
+</LinearLayout>

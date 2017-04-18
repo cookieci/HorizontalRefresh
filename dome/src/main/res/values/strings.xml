@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Dome</string>
+    <string name="button_button_button">这是一个大大的Button演示 这是一个大大的Button演示 这是一个大大的Button演示 重要的话说三遍</string>
+    <string name="this_scrollview_d">这是ScrollView演示</string>
+    <string name="this_recyclerView_d">这是RecyclerView演示</string>
+</resources>
