@@ -143,7 +143,8 @@ public class HorizontalRefreshView extends FrameLayout {
                     oldX = 0;
                     startAnim();
                     Log.v("--ACTION_UP--", "ACTION_UP");
-                    if (onHorizontalRefresh != null) {
+                    float scrollW = Math.abs(this.scrollW);
+                    if (onHorizontalRefresh != null && scrollW > maxW) {
                         if (scrollStats == 1) onHorizontalRefresh.OnLeftRefresh(this);
                         else onHorizontalRefresh.OnRightRefresh(this);
                     }
