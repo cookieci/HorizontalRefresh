@@ -47,7 +47,7 @@ public class HorizontalRefreshView extends FrameLayout {
         leftView.setId(leftViewId);
         leftView.setIsStats(1);
         leftView.setText(text1, text2);
-        leftView.setBgColor(bgColor);
+        leftView.setBgColor(bgColor);//设置拖动出来的颜色
 
         rightView = new MoreView(context);
         rightView.setId(rightViewId);
@@ -80,11 +80,11 @@ public class HorizontalRefreshView extends FrameLayout {
         for (int i = 0; i < childCount; i++) {
             View childAt = getChildAt(i);
             if (childAt.getId() == leftViewId) {//左边
-                childAt.layout(0, 0, 0, b);
+                childAt.layout(0, 0, 0, b);//将控件宽度设置为0
             } else if (childAt.getId() == rightViewId) {
                 childAt.layout(r, 0, 0, b);
             } else {
-                mChildView = childAt;
+                mChildView = childAt;//获取其中要滚动的view，可以是listview
             }
         }
     }
@@ -95,15 +95,15 @@ public class HorizontalRefreshView extends FrameLayout {
     public boolean onInterceptTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                ox = event.getX();
+                ox = event.getX();//按下时的位置
                 break;
             case MotionEvent.ACTION_MOVE:
                 float x = event.getX();
-                x = ox - x;
-                if (x > 0 && !canScrollLeft()) {
+                x = ox - x;//计算移动手指的偏移
+                if (x > 0 && !canScrollLeft()) {//判断是否可以向左滑
                     scrollStats = 2;
                     return true;
-                } else if (x < 0 && !canScrollRight()) {
+                } else if (x < 0 && !canScrollRight()) {//判断是否可以向右滑
                     scrollStats = 1;
                     return true;
                 }
@@ -118,37 +118,36 @@ public class HorizontalRefreshView extends FrameLayout {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_MOVE:
                     float x = event.getX();
-                    if (oldX == 0) oldX = x;
-                    else {
+                    if (oldX == 0) oldX = x;//第一次监听到移动
+                    else {//计算移动偏移
                         scrollW = oldX - x;
-                        ViewHelper.setTranslationX(mChildView, -scrollW);
-                        //scrollW = Math.abs(scrollW);
+                        ViewHelper.setTranslationX(mChildView, -scrollW);//平移控件
                         Log.v("--scrollW--", "" + scrollW);
                         Log.v("--scrollStats--", "" + scrollStats);
-                        //invalidate();
                         float scrollW = Math.abs(this.scrollW);
+                        //显示左右的提示控件
                         if (scrollStats == 1) {
                             leftView.layout(0, 0, (int) (scrollW > maxW ? maxW : scrollW), b);
-//                            leftView.invalidate();
                             leftView.setShowStats(scrollW > maxW ? 2 : 1);
                         } else if (scrollStats == 2) {
                             rightView.layout((int) (r - (scrollW > maxW ? maxW : scrollW)), 0, r, b);
                             rightView.setShowStats(scrollW > maxW ? 2 : 1);
-//                            rightView.invalidate();
                         }
                     }
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
+                    //结束滑动
                     oldX = 0;
+                    //开启动画
                     startAnim();
                     Log.v("--ACTION_UP--", "ACTION_UP");
+                    //触发监听事件
                     float scrollW = Math.abs(this.scrollW);
                     if (onHorizontalRefresh != null && scrollW > maxW) {
                         if (scrollStats == 1) onHorizontalRefresh.OnLeftRefresh(this);
                         else onHorizontalRefresh.OnRightRefresh(this);
                     }
-                    //开启动画
                     return true;
             }
         return super.onTouchEvent(event);
