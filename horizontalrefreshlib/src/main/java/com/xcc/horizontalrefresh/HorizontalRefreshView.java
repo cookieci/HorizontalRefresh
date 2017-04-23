@@ -73,6 +73,7 @@ public class HorizontalRefreshView extends FrameLayout {
 
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
+        r = r - l;
         this.r = r;
         b = b - t;
         this.b = b;
