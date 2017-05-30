@@ -1,17 +1,18 @@
-package com.xcc.horizontalrefresh;
+package com.qxlibrary.widget.horizontalrefresh;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.nineoldandroids.animation.ValueAnimator;
 import com.nineoldandroids.view.ViewHelper;
+import com.qxlibrary.R;
+import com.qxlibrary.Sysout;
 
 /**
  * Created by Administrator on 2017/4/8.
@@ -47,8 +48,8 @@ public class HorizontalRefreshView extends FrameLayout {
         leftView.setId(leftViewId);
         leftView.setIsStats(1);
         leftView.setText(text1, text2);
-        leftView.setBgColor(bgColor);//设置拖动出来的颜色
-
+        leftView.setBgColor(bgColor);
+//        leftView.
         rightView = new MoreView(context);
         rightView.setId(rightViewId);
         rightView.setIsStats(2);
@@ -59,12 +60,26 @@ public class HorizontalRefreshView extends FrameLayout {
         addView(leftView, params);
         params = new LayoutParams((int) maxW, -1);
         addView(rightView, params);
+
+        //setWillNotDraw(false);
+//        paint = new Paint();
+//        paint.setAntiAlias(true);
+//        paint.setStyle(Paint.Style.FILL);
+//        paint.setTextSize(20);
+//        path = new Path();
     }
 
+    //    private Paint paint;
+//    private Path path;
     private View mChildView;
     private int canRefresh = 3;//可以刷新的位置，1左，2右
     private MoreView leftView, rightView;
     private int leftViewId = 11, rightViewId = 12;
+    //private int rereshColor = 0xFFffFF00;//刷新颜色
+    //private int textColor = 0xFF000000;//刷新颜色
+    //private String refreshTextL = "加载刷新";//刷新文字
+    //private String refreshTextR = "加载刷新";//刷新文字
+    //private int refreshDist = 200;//刷新距离
     private int scrollStats = 0;//滚动状态 0可以滚，1向左边不可以，2向右边不可以
     private float scrollW;//手指滑动宽度
     private float maxW = 200;//贝塞尔曲线最大范围
@@ -81,30 +96,60 @@ public class HorizontalRefreshView extends FrameLayout {
         for (int i = 0; i < childCount; i++) {
             View childAt = getChildAt(i);
             if (childAt.getId() == leftViewId) {//左边
-                childAt.layout(0, 0, 0, b);//将控件宽度设置为0
+                childAt.layout(0, 0, 0, b);
             } else if (childAt.getId() == rightViewId) {
                 childAt.layout(r, 0, 0, b);
             } else {
-                mChildView = childAt;//获取其中要滚动的view，可以是listview
+                mChildView = childAt;
+                //childAt.layout(l, t, r, b);
             }
         }
     }
 
+
+//    protected void onDraw(Canvas canvas) {
+//        super.onDraw(canvas);
+//        //Sysout.v("--onDraw--", "super.onDraw(canvas);");
+//        if (scrollStats == 0) return;
+//        paint.setColor(rereshColor);
+//        path.reset();
+//        int width = getWidth();
+//        int height = getHeight();
+//        float abs = Math.abs(scrollW);
+//        if (abs > maxW) abs = maxW;
+//        float textx;
+//        if (scrollStats == 1) {
+//            path.moveTo(0, 0);
+//            textx = abs / 2.0f;
+//            path.lineTo(abs / 2.0f, 0);
+//            path.rQuadTo(abs, height / 2.0f, 0, height);
+//            path.lineTo(0, height);
+//        } else {
+//            path.moveTo(width, 0);
+//            textx = width - abs / 2.0f;
+//            path.lineTo(width - abs / 2.0f, 0);
+//            path.rQuadTo(-abs, height / 2.0f, /*width - 10*/0, height);
+//            path.lineTo(width, height);
+//        }
+//        canvas.drawPath(path, paint);
+//        paint.setColor(textColor);
+//        canvas.drawText("加载刷新", textx, height / 2.0f, paint);
+//    }
 
     private float ox;
 
     public boolean onInterceptTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                ox = event.getX();//按下时的位置
+                ox = event.getX();
                 break;
             case MotionEvent.ACTION_MOVE:
                 float x = event.getX();
-                x = ox - x;//计算移动手指的偏移
-                if (x > 0 && !canScrollLeft()) {//判断是否可以向左滑
+                x = ox - x;
+                if (x > 0 && !canScrollLeft()) {
                     scrollStats = 2;
                     return true;
-                } else if (x < 0 && !canScrollRight()) {//判断是否可以向右滑
+                } else if (x < 0 && !canScrollRight()) {
                     scrollStats = 1;
                     return true;
                 }
@@ -119,36 +164,43 @@ public class HorizontalRefreshView extends FrameLayout {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_MOVE:
                     float x = event.getX();
-                    if (oldX == 0) oldX = x;//第一次监听到移动
-                    else {//计算移动偏移
+                    if (oldX == 0) oldX = x;
+                    else {
                         scrollW = oldX - x;
-                        ViewHelper.setTranslationX(mChildView, -scrollW);//平移控件
-                        Log.v("--scrollW--", "" + scrollW);
-                        Log.v("--scrollStats--", "" + scrollStats);
-                        float scrollW = Math.abs(this.scrollW);
-                        //显示左右的提示控件
+                        //scrollW = Math.abs(scrollW);
+                        Sysout.v("--scrollW--", "" + scrollW);
+                        Sysout.v("--scrollStats--", "" + scrollStats);
+                        //invalidate();
+                        float scrollW = 0;
                         if (scrollStats == 1) {
+                            if (this.scrollW > 0) this.scrollW = 0;
+                            else scrollW = Math.abs(this.scrollW);
+                            ViewHelper.setTranslationX(mChildView, scrollW);
                             leftView.layout(0, 0, (int) (scrollW > maxW ? maxW : scrollW), b);
+//                            leftView.invalidate();
                             leftView.setShowStats(scrollW > maxW ? 2 : 1);
                         } else if (scrollStats == 2) {
+                            if (this.scrollW < 0) this.scrollW = 0;
+                            else scrollW = Math.abs(this.scrollW);
+                            ViewHelper.setTranslationX(mChildView, -scrollW);
                             rightView.layout((int) (r - (scrollW > maxW ? maxW : scrollW)), 0, r, b);
                             rightView.setShowStats(scrollW > maxW ? 2 : 1);
+//                            rightView.invalidate();
                         }
                     }
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
-                    //结束滑动
                     oldX = 0;
-                    //开启动画
                     startAnim();
-                    Log.v("--ACTION_UP--", "ACTION_UP");
+                    Sysout.v("--ACTION_UP--", "ACTION_UP");
                     //触发监听事件
                     float scrollW = Math.abs(this.scrollW);
                     if (onHorizontalRefresh != null && scrollW > maxW) {
                         if (scrollStats == 1) onHorizontalRefresh.OnLeftRefresh(this);
                         else onHorizontalRefresh.OnRightRefresh(this);
                     }
+                    //开启动画
                     return true;
             }
         return super.onTouchEvent(event);
@@ -185,6 +237,10 @@ public class HorizontalRefreshView extends FrameLayout {
             return true;
         }
         return ViewCompat.canScrollHorizontally(mChildView, 1);
+    }
+
+    public void setCanRefresh(int canRefresh) {
+        this.canRefresh = canRefresh;
     }
 
     public void setOnHorizontalRefresh(OnHorizontalRefresh onHorizontalRefresh) {
